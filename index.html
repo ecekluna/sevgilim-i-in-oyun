@@ -2,394 +2,396 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Aşkım İçin Özel Quiz & Kalp Avı! 💖</title>
 <style>
+  :root {
+    --primary: #ff4370;
+    --primary-dark: #c9184a;
+    --primary-light: #ffe5ec;
+    --bg-grad: linear-gradient(145deg, #ff9a9e 0%, #fecfef 50%, #fed6e3 100%);
+    --card-bg: rgba(255, 255, 255, 0.94);
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
   }
 
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-grad);
+  }
+
   body {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fed6e3 100%);
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     position: relative;
-    padding: 15px;
   }
 
-  /* Arka plan süzülen kalpler */
-  .bg-bubble {
-    position: absolute;
-    color: rgba(255, 255, 255, 0.45);
-    pointer-events: none;
-    animation: floatUp 8s linear infinite;
-    z-index: 1;
-  }
-
-  @keyframes floatUp {
-    0% { transform: translateY(105vh) rotate(0deg); opacity: 0.7; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-  }
-
-  .screen {
-    display: none;
+  /* Mobil Çerçeve */
+  .app-viewport {
     width: 100%;
-    max-width: 520px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 28px;
-    padding: 28px 24px;
-    box-shadow: 0 20px 45px rgba(220, 53, 69, 0.22);
-    text-align: center;
+    max-width: 480px;
+    height: 100%;
+    max-height: 860px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
     position: relative;
     z-index: 10;
-    border: 3px solid #ffccd5;
-    backdrop-filter: blur(10px);
-    animation: fadeIn 0.3s ease-in-out;
   }
 
-  .active-screen {
-    display: block;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  /* Butonlar */
-  .btn-main {
-    background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
-    color: white;
-    border: none;
-    padding: 16px 32px;
-    border-radius: 18px;
-    font-weight: 800;
-    font-size: 1.15rem;
-    cursor: pointer;
-    margin-top: 18px;
-    box-shadow: 0 6px 20px rgba(201, 24, 74, 0.35);
-    transition: transform 0.15s ease;
+  /* Kart Yapısı */
+  .game-card {
     width: 100%;
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 24px 20px;
+    box-shadow: 0 16px 40px rgba(217, 4, 41, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    text-align: center;
+    display: none;
+    flex-direction: column;
+    animation: zoomFade 0.28s ease-out;
   }
 
-  .btn-main:hover {
-    transform: scale(1.02);
+  .game-card.active {
+    display: flex;
   }
 
-  .btn-main:active {
-    transform: scale(0.98);
+  @keyframes zoomFade {
+    0% { opacity: 0; transform: scale(0.94); }
+    100% { opacity: 1; transform: scale(1); }
   }
 
-  /* Başlıklar & Skor */
-  .title-main {
-    color: #c9184a;
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-  }
-
-  .header {
+  /* Başlık ve Sayaç */
+  .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
-  .question-badge {
-    background: #ffe3e8;
-    color: #d90429;
+  .badge {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 0.9rem;
+    font-weight: 800;
     padding: 6px 14px;
     border-radius: 20px;
-    font-size: 0.95rem;
-    font-weight: 800;
   }
 
-  .heart-score {
-    background: #fff0f3;
+  .score-badge {
+    background: #fff;
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    font-weight: 900;
     padding: 6px 16px;
     border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(255, 67, 112, 0.18);
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: #c9184a;
-    box-shadow: 0 4px 10px rgba(255, 77, 109, 0.15);
-    border: 1px solid #ffccd5;
   }
 
-  .question-box {
-    font-size: 1.22rem;
+  .q-text {
+    font-size: 1.2rem;
+    font-weight: 800;
     color: #2b2d42;
-    margin-bottom: 22px;
-    font-weight: 700;
     line-height: 1.45;
+    margin: 10px 0 20px;
     min-height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .options-grid {
+  /* Şık Şıklar */
+  .options-box {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
   }
 
-  .btn-opt {
-    background: #ffffff;
-    border: 2px solid #ffb3c1;
-    padding: 14px 18px;
-    border-radius: 16px;
+  .opt-btn {
+    background: #fff;
+    border: 2px solid #ffccd5;
+    padding: 15px 16px;
+    border-radius: 18px;
     font-size: 0.98rem;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 700;
     color: #333;
-    font-weight: 600;
     text-align: left;
     display: flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+    transition: all 0.15s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
   }
 
-  .btn-opt:hover, .btn-opt:active {
-    background: #ff4d6d;
-    color: #ffffff;
-    border-color: #ff4d6d;
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 8px 18px rgba(255, 77, 109, 0.35);
+  .opt-btn:active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: scale(0.97);
   }
 
-  /* Kalp Toplama Sayfası */
-  .heart-game-banner {
-    background: #ffe3e8;
-    padding: 12px 18px;
-    border-radius: 18px;
-    margin-bottom: 15px;
-    border: 2px dashed #ff4d6d;
+  .opt-btn span.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: inline-block;
   }
 
-  .timer-box {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: #d90429;
-    margin: 8px 0;
+  .opt-btn:active span.dot {
+    background: #fff;
   }
 
-  .heart-arena {
+  /* Butonlar */
+  .action-btn {
+    background: linear-gradient(135deg, #ff4370 0%, #d90429 100%);
+    color: #fff;
+    border: none;
+    padding: 16px 28px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    box-shadow: 0 8px 24px rgba(217, 4, 41, 0.35);
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: transform 0.1s ease;
+  }
+
+  .action-btn:active {
+    transform: scale(0.96);
+  }
+
+  /* Canvas Kalp Oyunu */
+  #canvas-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    pointer-events: none;
-    z-index: 9999;
+    z-index: 100;
+    display: none;
+    touch-action: none;
   }
 
-  .falling-heart {
+  .canvas-hud {
     position: absolute;
-    font-size: 2.8rem;
-    cursor: pointer;
-    pointer-events: auto;
-    animation: fallAnimation linear forwards;
-    filter: drop-shadow(0 4px 10px rgba(255, 0, 85, 0.5));
-    transition: transform 0.1s ease;
-  }
-
-  .falling-heart:active {
-    transform: scale(2.2) !important;
-  }
-
-  @keyframes fallAnimation {
-    0% { transform: translateY(-70px) rotate(0deg); opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(115vh) rotate(360deg); opacity: 0; }
-  }
-
-  /* Ceza Animasyonu */
-  .punish-container {
-    background: #4a2c20;
-    border-radius: 18px;
-    padding: 16px;
-    margin: 14px 0;
-    position: relative;
-    border: 3px solid #795548;
-    overflow: hidden;
-  }
-
-  .choco-river {
-    background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
-    border-radius: 14px;
-    height: 110px;
-    position: relative;
+    top: 20px;
+    left: 0;
+    width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    pointer-events: none;
+    z-index: 102;
+  }
+
+  .timer-pill {
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 900;
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: 2px solid #ff4370;
+  }
+
+  .live-score-pill {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+    font-weight: 900;
+    padding: 8px 18px;
+    border-radius: 30px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+
+  .kiss-banner-top {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    border: 2px solid #ffccd5;
+    pointer-events: none;
+    z-index: 102;
+    white-space: nowrap;
+  }
+
+  /* Karakter Çizim Kutuları */
+  .illust-box {
+    width: 100%;
+    max-width: 280px;
+    margin: 10px auto;
+    display: flex;
     justify-content: center;
-    overflow: hidden;
   }
 
-  .victim-avatar {
-    position: absolute;
-    bottom: 8px;
-    font-size: 3.2rem;
-    animation: dunk 1.2s infinite ease-in-out;
+  .illust-box svg {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
   }
 
-  @keyframes dunk {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(22px) scale(0.9); }
-  }
-
-  .oompa-left {
-    position: absolute;
-    left: 8px;
-    top: 15px;
-    font-size: 2.3rem;
-    animation: hammerLeft 0.5s infinite alternate ease-in-out;
-  }
-
-  .oompa-right {
-    position: absolute;
-    right: 8px;
-    top: 15px;
-    font-size: 2.3rem;
-    animation: hammerRight 0.5s infinite alternate ease-in-out;
-  }
-
-  @keyframes hammerLeft {
-    0% { transform: rotate(-25deg) translateY(0); }
-    100% { transform: rotate(15deg) translateY(10px); }
-  }
-
-  @keyframes hammerRight {
-    0% { transform: rotate(25deg) translateY(0); }
-    100% { transform: rotate(-15deg) translateY(10px); }
-  }
-
-  .catapult-scene {
-    font-size: 2.8rem;
-    margin: 10px 0;
-    animation: launch 1s infinite ease-in-out;
-  }
-
-  @keyframes launch {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.15) rotate(10deg); }
-    100% { transform: scale(1) rotate(0deg); }
-  }
-
-  /* Modal */
-  .modal-overlay {
+  /* Pop-up Modalı (Ceza) */
+  .modal-mask {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.75);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 10000;
+    z-index: 1000;
     padding: 20px;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(5px);
   }
 
-  .modal-card {
-    background: #ffffff;
-    border-radius: 24px;
-    padding: 26px 20px;
-    max-width: 440px;
+  .modal-window {
+    background: #fff;
+    border-radius: 28px;
+    padding: 24px 20px;
+    max-width: 420px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 3px solid #ff758f;
+    border: 3px solid #ff4370;
+    animation: zoomFade 0.2s ease-out;
   }
 
-  @keyframes popIn {
-    0% { transform: scale(0.65); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+  /* Umpa Ceza Animasyonları */
+  .choco-pool-anim {
+    background: #3e2723;
+    border-radius: 18px;
+    padding: 14px;
+    margin: 12px 0;
+    border: 3px solid #6d4c41;
+  }
+
+  .anim-hit {
+    animation: hammerShake 0.4s infinite alternate ease-in-out;
+  }
+
+  @keyframes hammerShake {
+    0% { transform: translateY(0) rotate(-15deg); }
+    100% { transform: translateY(8px) rotate(15deg); }
   }
 </style>
 </head>
 <body>
 
-<!-- Arka Plan Süzülen Kalpler -->
-<div class="bg-bubble" style="left: 10%; font-size: 24px; animation-duration: 9s;">💕</div>
-<div class="bg-bubble" style="left: 30%; font-size: 32px; animation-duration: 7s; animation-delay: 2s;">💖</div>
-<div class="bg-bubble" style="left: 65%; font-size: 20px; animation-duration: 11s; animation-delay: 1s;">🌸</div>
-<div class="bg-bubble" style="left: 85%; font-size: 28px; animation-duration: 8s; animation-delay: 3s;">💗</div>
-
-<!-- KALP TOPLAMA ARENASI -->
-<div class="heart-arena" id="heart-arena"></div>
-
-<!-- 1. KAPAK EKRANI -->
-<div class="screen active-screen" id="screen-cover">
-  <div style="font-size: 4rem; margin-bottom: 10px;">💌 💑 ✨</div>
-  <h1 class="title-main">Beni Ne Kadar Tanıyorsun? 💖</h1>
-  <p style="color: #4a4e69; font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin: 15px 0;">
-    Sevgilim, senin için küçük bir sürpriz hazırladım! Benimle ilgili soruları bil, 
-    gökten yağan kalpleri topla ve aşk puanlarını kap! Bakalım beni ne kadar iyi tanıyorsun? 🥰
-  </p>
-  <button class="btn-main" onclick="startGame()">Oyuna Başla 💖</button>
-</div>
-
-<!-- 2. SORU EKRANI -->
-<div class="screen" id="screen-quiz">
-  <div class="header">
-    <span class="question-badge" id="question-count">Soru 1/5</span>
-    <div class="heart-score">💖 <span id="score-display-1">0</span></div>
-  </div>
-  <div class="question-box" id="question-text">Soru yükleniyor...</div>
-  <div class="options-grid" id="options-container"></div>
-</div>
-
-<!-- 3. KALP TOPLAMA SAYFASI (15 SANİYE) -->
-<div class="screen" id="screen-catch">
-  <div class="header">
-    <span class="question-badge" style="background:#d8f3dc; color:#2d6a4f;">Tebrikler Bildin! 🎉</span>
-    <div class="heart-score">💖 <span id="score-display-2">0</span></div>
-  </div>
-
-  <div class="heart-game-banner">
-    <div style="font-size: 3.2rem; margin: 5px 0;">👩‍❤️‍💋‍👨 💋 ✨</div>
-    <h3 style="color: #c9184a; font-size: 1.25rem;">Kocaman Bir Yanak Öpücüğü!</h3>
-    <p style="color: #555; font-size: 0.95rem; margin-top: 4px; font-weight: 600;">
-      Gökten yağan kalplere tıkla ve topla!
+<div class="app-viewport">
+  <!-- 1. KAPAK SAYFASI -->
+  <div class="game-card active" id="card-cover">
+    <div class="illust-box">
+      <!-- Çift Çizimi: Minyon gözlüklü kız & Tatlı göbekli iri sevgilisi -->
+      <svg viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="160" cy="120" r="110" fill="#FFE5EC"/>
+        <!-- Adam (İri & Göbekli) -->
+        <circle cx="120" cy="90" r="38" fill="#FFD1B3"/>
+        <path d="M 85 85 Q 120 50 155 85" fill="#3D2314"/>
+        <circle cx="110" cy="92" r="3.5" fill="#333"/>
+        <path d="M 112 108 Q 124 118 135 108" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M 98 100 Q 120 120 142 100" stroke="#C79A7B" stroke-width="2.5" stroke-dasharray="2 3" fill="none"/>
+        <!-- Adam Göbek & Vücut -->
+        <path d="M 70 140 Q 60 220 150 220 Q 180 220 175 140 Z" fill="#E76F51"/>
+        <path d="M 120 170 Q 155 170 155 205" stroke="#D35400" stroke-width="3" fill="none" opacity="0.4"/>
+        <!-- Kız (Minyon, Gözlüklü, Bereli) -->
+        <path d="M 155 130 C 140 180 160 220 220 220 C 250 220 250 170 240 130 Z" fill="#406343"/>
+        <circle cx="195" cy="95" r="30" fill="#FFE0BD"/>
+        <!-- Bere -->
+        <path d="M 165 95 C 165 55 235 55 235 95 Z" fill="#2D5A27"/>
+        <circle cx="200" cy="52" r="9" fill="#2D5A27"/>
+        <path d="M 160 95 L 240 95" stroke="#1F3F1B" stroke-width="5" stroke-linecap="round"/>
+        <!-- Gözlük -->
+        <rect x="175" y="88" width="18" height="15" rx="4" stroke="#4A3B32" stroke-width="3" fill="rgba(255,255,255,0.4)"/>
+        <rect x="200" y="88" width="18" height="15" rx="4" stroke="#4A3B32" stroke-width="3" fill="rgba(255,255,255,0.4)"/>
+        <line x1="193" y1="95" x2="200" y2="95" stroke="#4A3B32" stroke-width="3"/>
+        <!-- Öpücük Dudak -->
+        <circle cx="172" cy="104" r="4" fill="#FF4370"/>
+        <!-- Kalpler -->
+        <path d="M 155 40 Q 160 30 165 40 Q 170 50 160 58 Q 150 50 155 40 Z" fill="#FF4370"/>
+        <path d="M 240 70 Q 245 62 250 70 Q 255 78 247 84 Q 240 78 240 70 Z" fill="#FF758F"/>
+      </svg>
+    </div>
+    <h1 style="color: var(--primary-dark); font-size: 1.6rem; font-weight: 900; margin-bottom: 8px;">Beni Ne Kadar Tanıyorsun? 💖</h1>
+    <p style="color: #4a4e69; font-size: 1rem; font-weight: 600; line-height: 1.45; margin-bottom: 12px;">
+      Soruları bil, açılan özel sayfada gökten yağan kalpleri <b>15 saniye</b> boyunca toplayabildiğin kadar topla! 🥰
     </p>
-    <div class="timer-box">⏳ Kalan Süre: <span id="timer-text">15</span>s</div>
+    <button class="action-btn" onclick="startGame()">Oyuna Başla 💖</button>
   </div>
-  <p style="color: #888; font-size: 0.85rem;">Süre dolduğunda otomatik olarak bir sonraki soruya geçilecektir.</p>
+
+  <!-- 2. SORU KARTI -->
+  <div class="game-card" id="card-quiz">
+    <div class="top-bar">
+      <span class="badge" id="q-counter">Soru 1/5</span>
+      <div class="score-badge">💖 <span id="main-score">0</span></div>
+    </div>
+    <div class="q-text" id="q-title">Soru yükleniyor...</div>
+    <div class="options-box" id="options-box"></div>
+  </div>
+
+  <!-- 3. FİNAL KARTI -->
+  <div class="game-card" id="card-final">
+    <div style="font-size: 3.5rem; margin: 5px 0;">👩‍❤️‍💋‍👨 ✨ 💖</div>
+    <h1 style="color: var(--primary-dark); font-size: 1.65rem; font-weight: 900;">Tebrikler Sevgilim! 🎉</h1>
+    <div style="background: var(--primary-light); padding: 14px; border-radius: 20px; margin: 15px 0;">
+      <div style="font-size: 1rem; color: #800f2f; font-weight: 800;">TOPLADIĞIN AŞK PUANI</div>
+      <div style="font-size: 2.4rem; font-weight: 900; color: #d90429;" id="final-score-val">0</div>
+    </div>
+    <p style="color: #4a4e69; font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin-bottom: 12px;">
+      Tüm soruları tamamladın! Seni dünyadaki her şeyden çok seviyorum bir tanem! 🏡❤️
+    </p>
+    <button class="action-btn" onclick="resetToCover()">Tekrar Oyna 🔁</button>
+  </div>
 </div>
 
-<!-- 4. FİNAL EKRANI -->
-<div class="screen" id="screen-final">
-  <h1 class="title-main">Oyun Tamamlandı! 🎉</h1>
-  <div style="font-size: 4.5rem; margin: 12px 0;">👩‍❤️‍💋‍👨 ✨ 💖</div>
-  <div style="background: #ffe3e8; padding: 14px; border-radius: 16px; margin: 15px 0;">
-    <span style="font-size: 1.1rem; color: #800f2f; font-weight: bold;">Topladığın Toplam Kalp & Aşk Puanı:</span>
-    <div style="font-size: 2.2rem; font-weight: 900; color: #d90429; margin-top: 5px;" id="final-score">0</div>
+<!-- 15 SANİYELİK KALP AVCISI CANVAS EKRANI -->
+<div id="canvas-screen">
+  <div class="canvas-hud">
+    <div class="timer-pill">⏳ <span id="hud-timer">15</span>s</div>
+    <div class="live-score-pill">💖 <span id="hud-score">0</span></div>
   </div>
-  <p style="color: #4a4e69; font-size: 1.1rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px;">
-    Bütün soruları tamamladın bir tanem! Seni her şeyden çok ama çok seviyorum! ❤️🏡
-  </p>
-  <button class="btn-main" onclick="restartToCover()">Yeniden Oyna 🔁</button>
+  <canvas id="gameCanvas"></canvas>
+  <div class="kiss-banner-top">💋 BİLDİİİN! Yanak Öpücüğü & Kalpleri Topla! ✨</div>
 </div>
 
 <!-- CEZA MODALI (BİLEMEDİĞİNDE) -->
-<div class="modal-overlay" id="modal-punish">
-  <div class="modal-card">
-    <h2 id="modal-title" style="color: #c9184a; font-size: 1.3rem;"></h2>
-    <div id="modal-body"></div>
-    <p id="modal-desc" style="color: #444; font-size: 1rem; font-weight: 600; margin: 12px 0; line-height: 1.4;"></p>
-    <button class="btn-main" onclick="retryQuestion()">Tekrar Dene 🔁</button>
+<div class="modal-mask" id="punish-modal">
+  <div class="modal-window">
+    <h2 id="punish-title" style="color: #d90429; font-size: 1.25rem; font-weight: 900;"></h2>
+    <div class="choco-pool-anim">
+      <div style="font-size: 2.8rem;" class="anim-hit" id="punish-anim-icon">🔨🧑‍🌾 🧔🏊‍♂️ 🔨🧑‍🌾</div>
+    </div>
+    <p id="punish-desc" style="color: #333; font-weight: 700; font-size: 0.95rem; margin: 12px 0; line-height: 1.4;"></p>
+    <button class="action-btn" onclick="closePunishModal()">Tekrar Dene 🔁</button>
   </div>
 </div>
 
@@ -427,165 +429,236 @@
     }
   ];
 
-  let currentQ = 0;
+  let curQ = 0;
   let score = 0;
-  let heartSpawnInterval = null;
-  let timerInterval = null;
-  let timeLeft = 15;
 
-  function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-    document.getElementById(screenId).classList.add('active-screen');
+  function switchCard(cardId) {
+    document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+    document.getElementById(cardId).classList.add('active');
   }
 
-  function updateScore() {
-    document.getElementById('score-display-1').innerText = score;
-    document.getElementById('score-display-2').innerText = score;
+  function updateGlobalScore() {
+    document.getElementById('main-score').innerText = score;
+    document.getElementById('hud-score').innerText = score;
   }
 
   function startGame() {
-    currentQ = 0;
+    curQ = 0;
     score = 0;
-    updateScore();
-    showScreen('screen-quiz');
-    loadQuestion();
+    updateGlobalScore();
+    switchCard('card-quiz');
+    renderQuestion();
   }
 
-  function restartToCover() {
-    showScreen('screen-cover');
+  function resetToCover() {
+    switchCard('card-cover');
   }
 
-  function loadQuestion() {
-    if (currentQ >= questions.length) {
-      showFinal();
+  function renderQuestion() {
+    if (curQ >= questions.length) {
+      document.getElementById('final-score-val').innerText = score;
+      switchCard('card-final');
       return;
     }
-    const qData = questions[currentQ];
-    document.getElementById('question-count').innerText = `Soru ${currentQ + 1}/${questions.length}`;
-    document.getElementById('question-text').innerText = qData.q;
-    
-    const container = document.getElementById('options-container');
-    container.innerHTML = '';
+    const data = questions[curQ];
+    document.getElementById('q-counter').innerText = `Soru ${curQ + 1}/${questions.length}`;
+    document.getElementById('q-title').innerText = data.q;
 
-    qData.options.forEach((opt, idx) => {
+    const box = document.getElementById('options-box');
+    box.innerHTML = '';
+
+    data.options.forEach((opt, idx) => {
       const btn = document.createElement('button');
-      btn.className = 'btn-opt';
-      btn.innerHTML = `<span style="color:#ff4d6d;">●</span> ${opt}`;
-      btn.onclick = () => checkAnswer(idx);
-      container.appendChild(btn);
+      btn.className = 'opt-btn';
+      btn.innerHTML = `<span class="dot"></span> ${opt}`;
+      btn.onclick = () => onSelectOption(idx);
+      box.appendChild(btn);
     });
   }
 
-  function checkAnswer(selectedIdx) {
-    const isCorrect = selectedIdx === questions[currentQ].correct;
-    if (isCorrect) {
-      startHeartCatchingPhase();
+  function onSelectOption(idx) {
+    if (idx === questions[curQ].correct) {
+      if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+      launchCanvasHeartGame();
     } else {
-      showPunishmentModal();
+      if (navigator.vibrate) navigator.vibrate(200);
+      showPunishModal();
     }
   }
 
-  function showPunishmentModal() {
-    const punishments = [
+  function showPunishModal() {
+    const list = [
       {
         title: "EYVAH! ÇİKOLATA HAVUZUNDASIN! 🍫😱",
-        desc: "Nasıl bilemezsin! Mini Umpa Lumpalar seni yakaladı, çikolata havuzunda batırıp tokmakla kafana vuruyorlar! 🔨🧔🍫",
-        body: `
-          <div class="punish-container">
-            <div class="choco-river">
-              <span class="oompa-left">🔨🧑‍🌾</span>
-              <span class="victim-avatar">🧔🍫</span>
-              <span class="oompa-right">🔨🧑‍🌾</span>
-            </div>
-          </div>
-        `
+        desc: "Nasıl bilemezsin! Mini Umpa Lumpalar seni yakaladı, çikolata havuzunda tokmakla kovalıyorlar!",
+        icon: "🔨🧑‍🌾 🧔🍫 🔨🧑‍🌾"
       },
       {
-        title: "MANCINIKLA FIRLATIYORLAR! 🎯🚀",
-        desc: "Yanlış cevap! Umpa Lumpalar seni dev mancınığa bindirdi ve gökyüzüne fırlattı! 🏹💨",
-        body: `
-          <div class="punish-container">
-            <div class="catapult-scene">🪵🏹 💨 🧔🚀</div>
-            <div style="color: #ffcc80; font-weight: bold;">Umpa Lumpalar dans ederek gülüyor! 💃🕺</div>
-          </div>
-        `
+        title: "MANCINIKLA FIRLATTILAR! 🎯🚀",
+        desc: "Yanlış cevap! Umpa Lumpalar seni dev mancınığa koyup gökyüzüne fırlattı!",
+        icon: "🪵🏹 💨 🧔🚀"
       }
     ];
-
-    const pun = punishments[Math.floor(Math.random() * punishments.length)];
-    document.getElementById('modal-title').innerText = pun.title;
-    document.getElementById('modal-body').innerHTML = pun.body;
-    document.getElementById('modal-desc').innerText = pun.desc;
-    document.getElementById('modal-punish').style.display = 'flex';
+    const item = list[Math.floor(Math.random() * list.length)];
+    document.getElementById('punish-title').innerText = item.title;
+    document.getElementById('punish-desc').innerText = item.desc;
+    document.getElementById('punish-anim-icon').innerText = item.icon;
+    document.getElementById('punish-modal').style.display = 'flex';
   }
 
-  function retryQuestion() {
-    document.getElementById('modal-punish').style.display = 'none';
+  function closePunishModal() {
+    document.getElementById('punish-modal').style.display = 'none';
   }
 
-  /* 15 SANİYELİK KALP TOPLAMA SAYFASI */
-  function startHeartCatchingPhase() {
-    showScreen('screen-catch');
-    timeLeft = 15;
-    document.getElementById('timer-text').innerText = timeLeft;
+  /* ================= 60 FPS CANVAS MOTORU ================= */
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  let animationFrameId = null;
+  let hearts = [];
+  let particles = [];
+  let canvasTimer = 15;
+  let canvasInterval = null;
 
-    const arena = document.getElementById('heart-arena');
-    arena.innerHTML = '';
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
 
-    heartSpawnInterval = setInterval(() => {
-      spawnFallingHeart();
-    }, 280);
+  class HeartItem {
+    constructor() {
+      this.radius = Math.random() * 8 + 22; // Boyut
+      this.x = Math.random() * (canvas.width - this.radius * 2) + this.radius;
+      this.y = -this.radius * 2;
+      this.speed = Math.random() * 2.2 + 3.0; // Düşüş hızı
+      this.icon = ['💖', '💕', '💗', '❤️', '💋', '🍓', '✨'][Math.floor(Math.random() * 7)];
+      this.angle = Math.random() * 0.4 - 0.2;
+    }
+    update() {
+      this.y += this.speed;
+    }
+    draw() {
+      ctx.save();
+      ctx.font = `${this.radius * 1.6}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(this.icon, this.x, this.y);
+      ctx.restore();
+    }
+  }
 
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      document.getElementById('timer-text').innerText = timeLeft;
+  class PopParticle {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 8;
+      this.vy = (Math.random() - 0.5) * 8 - 2;
+      this.alpha = 1;
+      this.size = Math.random() * 14 + 16;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.alpha -= 0.04;
+    }
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, this.alpha);
+      ctx.font = `bold ${this.size}px sans-serif`;
+      ctx.fillStyle = '#ff1493';
+      ctx.fillText('+1 💖', this.x, this.y);
+      ctx.restore();
+    }
+  }
 
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        clearInterval(heartSpawnInterval);
-        arena.innerHTML = '';
-        currentQ++;
-        if (currentQ >= questions.length) {
-          showFinal();
-        } else {
-          showScreen('screen-quiz');
-          loadQuestion();
+  function launchCanvasHeartGame() {
+    resizeCanvas();
+    hearts = [];
+    particles = [];
+    canvasTimer = 15;
+    document.getElementById('hud-timer').innerText = canvasTimer;
+    document.getElementById('canvas-screen').style.display = 'block';
+
+    // Kalp oluşturma sıklığı
+    let spawnTimer = 0;
+
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Kalp Üret
+      spawnTimer++;
+      if (spawnTimer % 14 === 0) {
+        hearts.push(new HeartItem());
+      }
+
+      // Kalpleri Güncelle & Çiz
+      for (let i = hearts.length - 1; i >= 0; i--) {
+        const h = hearts[i];
+        h.update();
+        h.draw();
+        if (h.y > canvas.height + 50) {
+          hearts.splice(i, 1);
         }
+      }
+
+      // Parçacıkları Güncelle & Çiz
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.update();
+        p.draw();
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(loop);
+    }
+    loop();
+
+    // 15 Saniye Sayacı
+    canvasInterval = setInterval(() => {
+      canvasTimer--;
+      document.getElementById('hud-timer').innerText = canvasTimer;
+      if (canvasTimer <= 0) {
+        stopCanvasGame();
       }
     }, 1000);
   }
 
-  function spawnFallingHeart() {
-    const arena = document.getElementById('heart-arena');
-    const heart = document.createElement('div');
-    heart.className = 'falling-heart';
-    
-    const icons = ['💖', '💕', '💗', '❤️', '💋', '🍓', '✨', '😻'];
-    heart.innerText = icons[Math.floor(Math.random() * icons.length)];
-    heart.style.left = (Math.random() * 85 + 5) + 'vw';
-    
-    const duration = Math.random() * 1.5 + 2.2;
-    heart.style.animationDuration = duration + 's';
-
-    heart.onpointerdown = (e) => {
-      e.stopPropagation();
-      score += 1;
-      updateScore();
-      heart.style.transform = 'scale(2.2)';
-      heart.style.opacity = '0';
-      setTimeout(() => heart.remove(), 120);
-    };
-
-    arena.appendChild(heart);
-    setTimeout(() => {
-      if (heart.parentNode) heart.remove();
-    }, duration * 1000);
+  function stopCanvasGame() {
+    clearInterval(canvasInterval);
+    cancelAnimationFrame(animationFrameId);
+    document.getElementById('canvas-screen').style.display = 'none';
+    curQ++;
+    renderQuestion();
   }
 
-  function showFinal() {
-    showScreen('screen-final');
-    document.getElementById('final-score').innerText = score;
+  // Mobil Dokunmatik (Multi-Touch) Yakalama
+  function handleTouch(e) {
+    e.preventDefault();
+    const touches = e.changedTouches ? e.changedTouches : [e];
+    for (let t = 0; t < touches.length; t++) {
+      const touchX = touches[t].clientX;
+      const touchY = touches[t].clientY;
+
+      for (let i = hearts.length - 1; i >= 0; i--) {
+        const h = hearts[i];
+        const dist = Math.hypot(h.x - touchX, h.y - touchY);
+        // Dokunma alanı toleransı
+        if (dist < h.radius * 1.8) {
+          score += 1;
+          updateGlobalScore();
+          if (navigator.vibrate) navigator.vibrate(25);
+          particles.push(new PopParticle(h.x, h.y));
+          hearts.splice(i, 1);
+          break;
+        }
+      }
+    }
   }
+
+  canvas.addEventListener('touchstart', handleTouch, { passive: false });
+  canvas.addEventListener('mousedown', handleTouch);
 </script>
 </body>
 </html>
