@@ -38,7 +38,6 @@
     position: relative;
   }
 
-  /* Mobil Uyumlu Çerçeve */
   .app-viewport {
     width: 100%;
     max-width: 480px;
@@ -53,7 +52,6 @@
     z-index: 10;
   }
 
-  /* Kart Yapısı */
   .game-card {
     width: 100%;
     background: var(--card-bg);
@@ -77,7 +75,6 @@
     100% { opacity: 1; transform: scale(1); }
   }
 
-  /* Başlık ve Sayaç */
   .top-bar {
     display: flex;
     justify-content: space-between;
@@ -119,7 +116,6 @@
     justify-content: center;
   }
 
-  /* Şıklar */
   .options-box {
     display: flex;
     flex-direction: column;
@@ -163,7 +159,6 @@
     background: #fff;
   }
 
-  /* Butonlar */
   .action-btn {
     background: linear-gradient(135deg, #ff4370 0%, #d90429 100%);
     color: #fff;
@@ -183,7 +178,6 @@
     transform: scale(0.96);
   }
 
-  /* Soft Pembe Canvas Kalp Ekranı */
   #canvas-screen {
     position: fixed;
     top: 0;
@@ -208,18 +202,7 @@
     z-index: 102;
   }
 
-  .timer-pill {
-    background: rgba(255, 255, 255, 0.92);
-    color: var(--primary-dark);
-    font-size: 1.15rem;
-    font-weight: 900;
-    padding: 8px 18px;
-    border-radius: 30px;
-    border: 2px solid #ff758f;
-    box-shadow: 0 4px 15px rgba(255, 67, 112, 0.2);
-  }
-
-  .live-score-pill {
+  .timer-pill, .live-score-pill {
     background: rgba(255, 255, 255, 0.92);
     color: var(--primary-dark);
     font-size: 1.15rem;
@@ -249,11 +232,10 @@
     text-align: center;
   }
 
-  /* Karakter Çizim Kutuları */
   .illust-box {
     width: 100%;
-    max-width: 280px;
-    margin: 10px auto;
+    max-width: 270px;
+    margin: 8px auto 14px;
     display: flex;
     justify-content: center;
   }
@@ -261,10 +243,8 @@
   .illust-box svg {
     width: 100%;
     height: auto;
-    max-height: 200px;
   }
 
-  /* Pop-up Modalı (Ceza) */
   .modal-mask {
     position: fixed;
     top: 0;
@@ -315,34 +295,54 @@
   <!-- 1. KAPAK SAYFASI -->
   <div class="game-card active" id="card-cover">
     <div class="illust-box">
-      <!-- Çift Çizimi: Minyon gözlüklü kız & Tatlı göbekli iri sevgilisi -->
-      <svg viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="160" cy="120" r="110" fill="#FFE5EC"/>
-        <!-- Adam (İri & Göbekli) -->
-        <circle cx="120" cy="90" r="38" fill="#FFD1B3"/>
-        <path d="M 85 85 Q 120 50 155 85" fill="#3D2314"/>
-        <circle cx="110" cy="92" r="3.5" fill="#333"/>
-        <path d="M 112 108 Q 124 118 135 108" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M 98 100 Q 120 120 142 100" stroke="#C79A7B" stroke-width="2.5" stroke-dasharray="2 3" fill="none"/>
-        <!-- Adam Göbek & Vücut -->
-        <path d="M 70 140 Q 60 220 150 220 Q 180 220 175 140 Z" fill="#E76F51"/>
-        <path d="M 120 170 Q 155 170 155 205" stroke="#D35400" stroke-width="3" fill="none" opacity="0.4"/>
-        <!-- Kız (Minyon, Gözlüklü, Bereli) -->
-        <path d="M 155 130 C 140 180 160 220 220 220 C 250 220 250 170 240 130 Z" fill="#406343"/>
-        <circle cx="195" cy="95" r="30" fill="#FFE0BD"/>
-        <!-- Bere -->
-        <path d="M 165 95 C 165 55 235 55 235 95 Z" fill="#2D5A27"/>
-        <circle cx="200" cy="52" r="9" fill="#2D5A27"/>
-        <path d="M 160 95 L 240 95" stroke="#1F3F1B" stroke-width="5" stroke-linecap="round"/>
-        <!-- Gözlük -->
-        <rect x="175" y="88" width="18" height="15" rx="4" stroke="#4A3B32" stroke-width="3" fill="rgba(255,255,255,0.4)"/>
-        <rect x="200" y="88" width="18" height="15" rx="4" stroke="#4A3B32" stroke-width="3" fill="rgba(255,255,255,0.4)"/>
-        <line x1="193" y1="95" x2="200" y2="95" stroke="#4A3B32" stroke-width="3"/>
-        <!-- Öpücük Dudak -->
-        <circle cx="172" cy="104" r="4" fill="#FF4370"/>
-        <!-- Kalpler -->
-        <path d="M 155 40 Q 160 30 165 40 Q 170 50 160 58 Q 150 50 155 40 Z" fill="#FF4370"/>
-        <path d="M 240 70 Q 245 62 250 70 Q 255 78 247 84 Q 240 78 240 70 Z" fill="#FF758F"/>
+      <!-- Kusursuz Hizalanmış Çift Vektör Çizimi -->
+      <svg viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Arka Plan Daire & Parıltılar -->
+        <circle cx="140" cy="100" r="88" fill="#FFE5EC"/>
+        <path d="M 140 18 Q 145 10 150 18 Q 155 26 145 32 Q 135 26 140 18 Z" fill="#FF4370"/>
+        <path d="M 230 45 Q 235 38 240 45 Q 245 52 237 57 Q 230 52 230 45 Z" fill="#FF758F"/>
+
+        <!-- SEVGİLİN (İri, Hafif Göbekli, Sakallı) -->
+        <g id="adam">
+          <!-- Gövde / Turuncu Sweatshirt -->
+          <path d="M 50 130 C 45 195 130 195 145 130 Z" fill="#E76F51"/>
+          <path d="M 85 160 Q 115 165 110 185" stroke="#C0392B" stroke-width="2.5" fill="none" opacity="0.3"/>
+          <!-- Kafa -->
+          <circle cx="95" cy="82" r="32" fill="#FFD1B3"/>
+          <!-- Saç -->
+          <path d="M 66 78 C 66 52 124 52 124 78 C 115 65 80 65 66 78 Z" fill="#3D2314"/>
+          <!-- Sakal & Bıyık -->
+          <path d="M 75 88 C 75 110 115 110 115 88 C 110 94 80 94 75 88 Z" fill="#4E342E" opacity="0.85"/>
+          <!-- Gözler (Mutlu Kapalı) -->
+          <path d="M 78 80 Q 84 85 90 80" stroke="#2C1A0F" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <path d="M 98 80 Q 104 85 110 80" stroke="#2C1A0F" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <!-- Gülümseme -->
+          <path d="M 88 95 Q 95 100 102 95" stroke="#FFF" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </g>
+
+        <!-- SEN (Minyon, Gözlüklü, Bereli, Öpen) -->
+        <g id="kiz">
+          <!-- Gövde / Yeşil Kıyafet & Atkı -->
+          <path d="M 130 120 C 130 175 210 175 210 120 Z" fill="#386641"/>
+          <!-- Kafa -->
+          <circle cx="170" cy="85" r="26" fill="#FFE0BD"/>
+          <!-- Bere & Ponpon -->
+          <path d="M 144 82 C 144 48 196 48 196 82 Z" fill="#2D5A27"/>
+          <path d="M 142 82 L 198 82" stroke="#1F3F1B" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="170" cy="48" r="8" fill="#2D5A27"/>
+          <!-- Saç Tutamları -->
+          <path d="M 146 84 Q 144 110 152 120" stroke="#4A2810" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M 194 84 Q 196 110 188 120" stroke="#4A2810" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <!-- Gözlükler -->
+          <rect x="150" y="77" width="16" height="13" rx="3.5" stroke="#4A3B32" stroke-width="2.5" fill="rgba(255,255,255,0.45)"/>
+          <rect x="172" y="77" width="16" height="13" rx="3.5" stroke="#4A3B32" stroke-width="2.5" fill="rgba(255,255,255,0.45)"/>
+          <line x1="166" y1="83" x2="172" y2="83" stroke="#4A3B32" stroke-width="2.5"/>
+          <!-- Gözler -->
+          <path d="M 154 83 Q 158 80 162 83" stroke="#2C1A0F" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M 176 83 Q 180 80 184 83" stroke="#2C1A0F" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <!-- Öpücük Dudak -->
+          <circle cx="146" cy="94" r="3.5" fill="#FF4370"/>
+        </g>
       </svg>
     </div>
     <h1 style="color: var(--primary-dark); font-size: 1.6rem; font-weight: 900; margin-bottom: 8px;">Beni Ne Kadar Tanıyorsun? 💖</h1>
