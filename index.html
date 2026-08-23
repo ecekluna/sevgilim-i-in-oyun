@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Aşkım İçin Özel Quiz & Kalp Avı! 💖</title>
+<title>Aşkım İçin Özel Quiz Oyunu! 💖</title>
 <style>
   :root {
     --primary: #ff4370;
@@ -343,7 +343,7 @@
     </div>
     <h1 style="color: var(--primary-dark); font-size: 1.6rem; font-weight: 900; margin-bottom: 8px;">Beni Ne Kadar Tanıyorsun? 💖</h1>
     <p style="color: #4a4e69; font-size: 1rem; font-weight: 600; line-height: 1.45; margin-bottom: 12px;">
-      Soruları bil, açılan özel sayfada gökten yağan kalpleri <b>15 saniye</b> boyunca toplayabildiğin kadar topla! 🥰
+      Soruları bil, kalpleri <b>15 saniye</b> boyunca toplayabildiğin kadar topla! 
     </p>
     <button class="action-btn" onclick="startGame()">Oyuna Başla 💖</button>
   </div>
@@ -361,15 +361,15 @@
   <!-- 3. FİNAL KARTI -->
   <div class="game-card" id="card-final">
     <div style="font-size: 3.5rem; margin: 5px 0;">👩‍❤️‍💋‍👨 ✨ 💖</div>
-    <h1 style="color: var(--primary-dark); font-size: 1.65rem; font-weight: 900;">Tebrikler Sevgilim! 🎉</h1>
+    <h1 style="color: var(--primary-dark); font-size: 1.65rem; font-weight: 900;">Tebrikler Sevgilimmmmm! 🎉</h1>
     <div style="background: var(--primary-light); padding: 14px; border-radius: 20px; margin: 15px 0;">
-      <div style="font-size: 1rem; color: #800f2f; font-weight: 800;">TOPLADIĞIN AŞK PUANI</div>
+      <div style="font-size: 1rem; color: #800f2f; font-weight: 800;">TOPLADIĞIN PUAN</div>
       <div style="font-size: 2.4rem; font-weight: 900; color: #d90429;" id="final-score-val">0</div>
     </div>
     <p style="color: #4a4e69; font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin-bottom: 12px;">
-      Tüm soruları tamamladın! Seni dünyadaki her şeyden çok seviyorum bir tanem! 🏡❤️
+      Tüm soruları tamamladınnnn! Seni dünyadaki her şeyden çoooook ama çooook seviyorum sevgilim benimmmm! 🏡❤️
     </p>
-    <button class="action-btn" onclick="resetToCover()">Tekrar Oyna 🔁</button>
+    <button class="action-btn" onclick="resetToCover()">Kıvıcıvıcı, tekrar oyna 🔁</button>
   </div>
 </div>
 
@@ -380,7 +380,7 @@
     <div class="live-score-pill">💖 <span id="hud-score">0</span></div>
   </div>
   <canvas id="gameCanvas"></canvas>
-  <div class="kiss-banner-top">💋 BİLDİİİN! Yanak Öpücüğü & Kalpleri Topla! ✨</div>
+  <div class="kiss-banner-top">💋 BİLDİİİN! Seni kocamannn öpüyorummm! ✨</div>
 </div>
 
 <!-- CEZA MODALI (BİLEMEDİĞİNDE) -->
@@ -425,6 +425,31 @@
     {
       q: "5) Seninle gelecekte birlikte gerçekleştirmek istediğim en büyük hayalimiz nedir?",
       options: ["A) Dünya turuna çıkmak", "B) Sahil kasabasına taşınmak", "C) Köye yerleşmek", "D) Karavanla kamp yapmak"],
+      correct: 2
+    },
+    {
+      q: "6) Bana zorla en çok ettirdiğin küfür hangisi?",
+      options: ["A) Salak", "B) Piç", "C) Ben asla küfür ettirmem", "D) Mal"],
+      correct: 1
+    },
+    {
+      q: "7) seni ne kadar seviyorum?",
+      options: ["A) Hiç sevmiyorum", "B) Azıcık seviyorum", "C) Senin için ölürüm ben beee", "D) Sevgi mi o ne"],
+      correct: 2
+    },
+    {
+      q: "8) Hayatımın sonuna kadar tek bir yemek yiyebilsem ne yemek isterdim?",
+      options: ["A) Makarna", "B) Aynı yemeği 2 gün üst üste bile yiyemem", "C) Çiğköfte", "D) Seniiii"],
+      correct: 3
+    },
+    {
+      q: "9) En sevdiğim kuruyemiş nedir?",
+      options: ["A) Fıstık (Ama yer fıstığı)", "B) Kaju", "C) Fıstık (Ama Antep fıstığı", "D) Ceviz"],
+      correct: 0
+    },
+    {
+      q: "10) Sen olmayınca kendimi nasıl hissediyorum?",
+      options: ["A) Çok mutlu", "B) Heyecanlı", "C) Yaşama sevinci dolu", "D) Bok gibi"],
       correct: 2
     }
   ];
@@ -489,13 +514,8 @@
   function showPunishModal() {
     const list = [
       {
-        title: "EYVAH! ÇİKOLATA HAVUZUNDASIN! 🍫😱",
-        desc: "Nasıl bilemezsin! Mini Umpa Lumpalar seni yakaladı, çikolata havuzunda tokmakla kovalıyorlar!",
-        icon: "🔨🧑‍🌾 🧔🍫 🔨🧑‍🌾"
-      },
-      {
         title: "MANCINIKLA FIRLATTILAR! 🎯🚀",
-        desc: "Yanlış cevap! Umpa Lumpalar seni dev mancınığa koyup gökyüzüne fırlattı!",
+        desc: "Yanlış cevap! Kölelerim seni dev mancınığa koyup gökyüzüne fırlatıyoooooooooo!",
         icon: "🪵🏹 💨 🧔🚀"
       }
     ];
