@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Aşkım İçin Özel Quiz & Kalp Avı! 💖</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fed6e3 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    padding: 15px;
+  }
+
+  .bg-bubble {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+    animation: floatUp 8s linear infinite;
+    z-index: 1;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(105vh) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  .game-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 28px;
+    padding: 26px 22px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 20px 45px rgba(220, 53, 69, 0.22);
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    border: 3px solid #ffccd5;
+    backdrop-filter: blur(10px);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    font-weight: 700;
+    color: #e63946;
+  }
+
+  .question-badge {
+    background: #ffe3e8;
+    color: #d90429;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+
+  .heart-score {
+    background: #fff0f3;
+    padding: 6px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #c9184a;
+    box-shadow: 0 4px 10px rgba(255, 77, 109, 0.15);
+    border: 1px solid #ffccd5;
+  }
+
+  .question-box {
+    font-size: 1.22rem;
+    color: #2b2d42;
+    margin-bottom: 22px;
+    font-weight: 700;
+    line-height: 1.45;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .btn-opt {
+    background: #ffffff;
+    border: 2px solid #ffb3c1;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-size: 0.98rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+  }
+
+  .btn-opt:hover, .btn-opt:active {
+    background: #ff4d6d;
+    color: #ffffff;
+    border-color: #ff4d6d;
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 18px rgba(255, 77, 109, 0.35);
+  }
+
+  .falling-heart {
+    position: fixed;
+    top: -60px;
+    font-size: 2.6rem;
+    cursor: pointer;
+    z-index: 9999;
+    animation: fallAnimation linear forwards;
+    filter: drop-shadow(0 4px 8px rgba(255, 0, 85, 0.4));
+    transition: transform 0.1s ease;
+  }
+
+  @keyframes fallAnimation {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(115vh) rotate(360deg); opacity: 0; }
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.72);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 26px 20px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 3px solid #ff758f;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.65); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .punish-container {
+    background: #4a2c20;
+    border-radius: 18px;
+    padding: 16px;
+    margin: 14px 0;
+    position: relative;
+    border: 3px solid #795548;
+    overflow: hidden;
+  }
+
+  .choco-river {
+    background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+    border-radius: 14px;
+    height: 110px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .victim-avatar {
+    position: absolute;
+    bottom: 8px;
+    font-size: 3.2rem;
+    animation: dunk 1.2s infinite ease-in-out;
+  }
+
+  @keyframes dunk {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(22px) scale(0.9); }
+  }
+
+  .oompa-left {
+    position: absolute;
+    left: 8px;
+    top: 15px;
+    font-size: 2.3rem;
+    animation: hammerLeft 0.5s infinite alternate ease-in-out;
+  }
+
+  .oompa-right {
+    position: absolute;
+    right: 8px;
+    top: 15px;
+    font-size: 2.3rem;
+    animation: hammerRight 0.5s infinite alternate ease-in-out;
+  }
+
+  @keyframes hammerLeft {
+    0% { transform: rotate(-25deg) translateY(0); }
+    100% { transform: rotate(15deg) translateY(10px); }
+  }
+
+  @keyframes hammerRight {
+    0% { transform: rotate(25deg) translateY(0); }
+    100% { transform: rotate(-15deg) translateY(10px); }
+  }
+
+  .catapult-scene {
+    font-size: 2.8rem;
+    margin: 10px 0;
+    animation: launch 1s infinite ease-in-out;
+  }
+
+  @keyframes launch {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.15) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  .kiss-box {
+    background: #fff0f5;
+    border-radius: 18px;
+    padding: 16px;
+    margin: 14px 0;
+    border: 2px dashed #ff4d6d;
+  }
+
+  .btn-action {
+    background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 6px 18px rgba(201, 24, 74, 0.35);
+    transition: transform 0.15s ease;
+    width: 100%;
+  }
+
+  .btn-action:hover {
+    transform: scale(1.02);
+  }
+
+  .final-screen {
+    display: none;
+  }
+
+  .final-screen h1 {
+    color: #c9184a;
+    font-size: 1.7rem;
+    margin-bottom: 12px;
+  }
+
+  .score-banner {
+    background: #ffe3e8;
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #800f2f;
+    margin: 12px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-bubble" style="left: 10%; font-size: 24px; animation-duration: 9s;">💕</div>
+<div class="bg-bubble" style="left: 30%; font-size: 32px; animation-duration: 7s; animation-delay: 2s;">💖</div>
+<div class="bg-bubble" style="left: 65%; font-size: 20px; animation-duration: 11s; animation-delay: 1s;">🌸</div>
+<div class="bg-bubble" style="left: 85%; font-size: 28px; animation-duration: 8s; animation-delay: 3s;">💗</div>
+
+<div class="game-container">
+  <div id="quiz-area">
+    <div class="header">
+      <span class="question-badge" id="question-count">Soru 1/5</span>
+      <div class="heart-score">💖 <span id="score">0</span></div>
+    </div>
+    <div class="question-box" id="question-text">Soru Yükleniyor...</div>
+    <div class="options-grid" id="options-container"></div>
+    <p style="font-size: 0.82rem; color: #888; margin-top: 6px;">✨ Doğru bildikçe havadan düşen kalplere tıklayıp ekstra puan topla!</p>
+  </div>
+
+  <div class="final-screen" id="final-area">
+    <h1>Tebrikler Bir Tanem! 🎉</h1>
+    <div class="kiss-box">
+      <div style="font-size: 3.5rem; margin: 10px 0;">👩‍❤️‍💋‍👨 ✨ 💖</div>
+      <div style="font-weight: 800; color: #d90429; font-size: 1.2rem;">Kocaman Sarılma & Yanak Öpücüğü!</div>
+    </div>
+    <div class="score-banner">
+      Toplanan Toplam Aşk Puanı: <span id="final-score" style="color: #d90429; font-size: 1.4rem;">0</span> 💖
+    </div>
+    <p style="color: #4a4e69; font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin-bottom: 16px;">
+      Bütün soruları tamamladın! Seni her şeyden çok seviyorum aşkım! 🏡❤️
+    </p>
+    <button class="btn-action" onclick="restartGame()">Tekrar Oyna 🔁</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-card">
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+    <p id="modal-desc" style="color: #444; font-size: 1rem; font-weight: 600; margin: 12px 0; line-height: 1.4;"></p>
+    <button class="btn-action" id="modal-next-btn" onclick="nextQuestion()">Sıradaki Soruya Geç ➜</button>
+  </div>
+</div>
+
+<script>
+  const questions = [
+    {
+      q: "1) Benim en sevdiğim renk hangisi?",
+      options: ["A) Yeşil", "B) Mavi", "C) Pembe", "D) Siyah"],
+      correct: 0
+    },
+    {
+      q: "2) İlk buluştuğumuz gün üzerimizde ne vardı?",
+      options: [
+        "A) Bende kırmızı elbise, sende mavi gömlek",
+        "B) Bende beyaz crop & kot pantolon; Sende çizgili siyah tişört & siyah pantolon",
+        "C) Bende siyah hoodie, sende deri ceket",
+        "D) Bende yeşil kazak, sende gri sweatshirt"
+      ],
+      correct: 1
+    },
+    {
+      q: "3) Kahvemi / içeceğimi en çok nasıl severim?",
+      options: ["A) Bol sütlü ve şekerli", "B) Sade filtre kahve / şekersiz", "C) Buzlu / Soğuk", "D) Ayran severim"],
+      correct: 3
+    },
+    {
+      q: "4) Moralim bozuk olduğunda beni en hızlı ne neşelendirir?",
+      options: ["A) En sevdiğim tatlıyı almak", "B) Sıkıca sarılmak", "C) Komik videolar izletmek", "D) Beni yalnız bırakmak"],
+      correct: 1
+    },
+    {
+      q: "5) Seninle gelecekte birlikte gerçekleştirmek istediğim en büyük hayalimiz nedir?",
+      options: ["A) Dünya turuna çıkmak", "B) Sahil kasabasına taşınmak", "C) Köye yerleşmek", "D) Karavanla kamp yapmak"],
+      correct: 2
+    }
+  ];
+
+  let currentQ = 0;
+  let score = 0;
+
+  function loadQuestion() {
+    if (currentQ >= questions.length) {
+      showFinal();
+      return;
+    }
+    const qData = questions[currentQ];
+    document.getElementById('question-count').innerText = `Soru ${currentQ + 1}/${questions.length}`;
+    document.getElementById('question-text').innerText = qData.q;
+    
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+
+    qData.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'btn-opt';
+      btn.innerHTML = `<span style="color:#ff4d6d;">●</span> ${opt}`;
+      btn.onclick = () => checkAnswer(idx);
+      container.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(selectedIdx) {
+    const isCorrect = selectedIdx === questions[currentQ].correct;
+    if (isCorrect) {
+      score += 15;
+      updateScore();
+      triggerHeartRain(20);
+      showSuccessModal();
+    } else {
+      showPunishmentModal();
+    }
+  }
+
+  function updateScore() {
+    document.getElementById('score').innerText = score;
+  }
+
+  function triggerHeartRain(count) {
+    const heartIcons = ['💖', '💕', '💗', '❤️', '🍓', '💋', '✨', '😻'];
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        heart.className = 'falling-heart';
+        heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+        heart.style.left = (Math.random() * 85 + 5) + 'vw';
+        const duration = Math.random() * 2 + 2.5;
+        heart.style.animationDuration = duration + 's';
+        
+        heart.onclick = (e) => {
+          e.stopPropagation();
+          score += 2;
+          updateScore();
+          heart.style.transform = 'scale(2.2)';
+          heart.style.opacity = '0';
+          setTimeout(() => heart.remove(), 150);
+        };
+
+        document.body.appendChild(heart);
+        setTimeout(() => {
+          if (heart.parentNode) heart.remove();
+        }, duration * 1000);
+      }, i * 160);
+    }
+  }
+
+  function showSuccessModal() {
+    const modal = document.getElementById('modal');
+    document.getElementById('modal-title').innerHTML = "<span style='color:#e63946;'>BİLDİİİN! 🥳💖</span>";
+    document.getElementById('modal-body').innerHTML = `
+      <div class="kiss-box">
+        <div style="font-size: 3.2rem; margin: 6px 0;">👩‍❤️‍💋‍👨 ✨ 🥰</div>
+        <p style="font-weight:700; color:#d90429;">Yanağından kocaman bir öpücük & sımsıkı sarılma! ❤️</p>
+      </div>
+    `;
+    document.getElementById('modal-desc').innerText = "Aferin bir taneme! (Gökten yağan kalplere tıklayıp ekstra aşk puanı toplayabilirsin!)";
+    modal.style.display = 'flex';
+  }
+
+  function showPunishmentModal() {
+    const modal = document.getElementById('modal');
+    const punishments = [
+      {
+        title: "EYVAH! ÇİKOLATA HAVUZUNDASIN! 🍫😱",
+        desc: "Nasıl bilemezsin! Mini Umpa Lumpalar seni yakaladı, çikolata havuzunda batırıp tokmakla kafana vuruyorlar! 🔨🧔🍫",
+        body: `
+          <div class="punish-container">
+            <div class="choco-river">
+              <span class="oompa-left">🔨🧑‍🌾</span>
+              <span class="victim-avatar">🧔🍫</span>
+              <span class="oompa-right">🔨🧑‍🌾</span>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "MANCINIKLA FIRLATIYORLAR! 🎯🚀",
+        desc: "Yanlış cevap! Umpa Lumpalar seni dev mancınığa bindirdi ve gökyüzüne fırlattı! 🏹💨",
+        body: `
+          <div class="punish-container">
+            <div class="catapult-scene">🪵🏹 💨 🧔🚀</div>
+            <div style="color: #ffcc80; font-weight: bold;">Umpa Lumpalar dans ederek gülüyor! 💃🕺</div>
+          </div>
+        `
+      }
+    ];
+
+    const pun = punishments[Math.floor(Math.random() * punishments.length)];
+    document.getElementById('modal-title').innerHTML = `<span style="color:#c9184a;">${pun.title}</span>`;
+    document.getElementById('modal-body').innerHTML = pun.body;
+    document.getElementById('modal-desc').innerText = pun.desc;
+    modal.style.display = 'flex';
+  }
+
+  function nextQuestion() {
+    document.getElementById('modal').style.display = 'none';
+    currentQ++;
+    loadQuestion();
+  }
+
+  function showFinal() {
+    document.getElementById('quiz-area').style.display = 'none';
+    document.getElementById('final-area').style.display = 'block';
+    document.getElementById('final-score').innerText = score;
+    triggerHeartRain(40);
+  }
+
+  function restartGame() {
+    currentQ = 0;
+    score = 0;
+    updateScore();
+    document.getElementById('quiz-area').style.display = 'block';
+    document.getElementById('final-area').style.display = 'none';
+    loadQuestion();
+  }
+
+  loadQuestion();
+</script>
+</body>
+</html>
